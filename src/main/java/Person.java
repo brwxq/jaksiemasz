@@ -8,7 +8,7 @@ public class Person{
 
     Person (String name, String surname, String email) {
 
-        Preconditions.checkArgument(surname.matches("[1-9]+[0-9]*"),"Wrong surname: " + surname);
+        Preconditions.checkArgument(surname.matches("[a-zA-Z]{2,}"),"Wrong surname: " + surname);
         Preconditions.checkArgument(name.matches("[a-zA-Z]+"),"Wrong name: " + name);
         Preconditions.checkArgument(email.matches("^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+" +
                 "(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$"),"Wrong email: " + email);
