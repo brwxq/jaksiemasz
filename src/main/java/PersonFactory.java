@@ -10,9 +10,9 @@ import java.util.stream.Stream;
 
 public class PersonFactory {
 
-    private final String PATH_TO_EMAILS_FILE = "/Users/dawid/IdeaProjects/jsm-exercise0/src/main/resources/emails";
-    private final String PATH_TO_NAMES_FILE = "/Users/dawid/IdeaProjects/jsm-exercise0/src/main/resources/names";
-    private final String PATH_TO_SURNAMES_FILE = "/Users/dawid/IdeaProjects/jsm-exercise0/src/main/resources/surnames";
+    private final String PATH_TO_EMAILS_FILE = "./src/main/resources/emails";
+    private final String PATH_TO_NAMES_FILE = "./src/main/resources/names";
+    private final String PATH_TO_SURNAMES_FILE = "./src/main/resources/surnames";
 
     private List<String> names;
     private List<String> surnames;
