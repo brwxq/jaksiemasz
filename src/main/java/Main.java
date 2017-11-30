@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         PersonFactory generator = new PersonFactory();
 
-        Integer limit = 20;
+        int limit = 20;
 
         if(args.length>0 && args[0].matches("[1-9]+[0-9]*")){
             limit = Integer.valueOf(args[0]);
