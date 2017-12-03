@@ -22,6 +22,6 @@ public class DeveloperReport implements IReport{
         }
 
         System.out.println("Number of all units: " + unitsPerDeveloper);
-        System.out.println();
+        System.out.println("-------------------------");
     }
 }

@@ -12,10 +12,9 @@ public class TeamManagerReport implements IReport{
     @Override
     public void getReport() {
         System.out.println(teamManager);
-        System.out.println("\nLists of subordinates");
+        System.out.println("\nLists of subordinates:");
         teamManager.getEmployees()
-                .forEach(e->{
-                    e.reportWork().getReport();
-                });
+                .forEach(e-> e.reportWork().getReport());
+        System.out.println("========================");
     }
 }

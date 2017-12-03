@@ -3,7 +3,9 @@ package model;
 import reports.IReport;
 import reports.TeamManagerReport;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class TeamManager extends AbstractEmployee implements IManager {
 
@@ -19,9 +21,7 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     @Override
     public void hire(IEmployee employee) {
-        if(canHire()){
-            employees.add(employee);
-        }
+        employees.add(employee);
     }
 
     @Override
@@ -36,8 +36,10 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     @Override
     public void assign(Task task) {
-        IEmployee employee = employees.get(random.nextInt(employees.size()));
-        employee.assign(task);
+        if(employees.size()!=0) {
+            IEmployee employee = employees.get(random.nextInt(employees.size()));
+            employee.assign(task);
+        }
     }
 
     @Override
