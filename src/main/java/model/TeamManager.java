@@ -1,8 +1,5 @@
 package model;
 
-import reports.IReport;
-import reports.TeamManagerReport;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -43,8 +40,16 @@ public class TeamManager extends AbstractEmployee implements IManager {
     }
 
     @Override
-    public IReport reportWork() {
-        return new TeamManagerReport(this);
+    public Report reportWork() {
+        List<Task> tasks = new LinkedList<>();
+
+        for(IEmployee e : employees){
+            if(e instanceof Developer) {
+                Developer developer = (Developer) e;
+                tasks.addAll(developer.getTasks());
+            }
+        }
+        return new Report(this,tasks);
     }
 
     public List<IEmployee> getEmployees() {

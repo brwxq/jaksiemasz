@@ -1,8 +1,5 @@
 package model;
 
-import reports.DeveloperReport;
-import reports.IReport;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,8 +17,8 @@ public class Developer extends AbstractEmployee {
     }
 
     @Override
-    public IReport reportWork() {
-        return new DeveloperReport(this);
+    public Report reportWork() {
+        return new Report(this,tasks);
     }
 
     public List<Task> getTasks() {

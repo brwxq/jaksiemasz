@@ -42,8 +42,6 @@ public class CompanyFactory {
         randomEmployees.addAll(developers);
         randomEmployees.add(ceo);
 
-        managers.get(0).reportWork().getReport();
-
         return randomEmployees;
     }
 
