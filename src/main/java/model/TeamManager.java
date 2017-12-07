@@ -2,6 +2,7 @@ package model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class TeamManager extends AbstractEmployee implements IManager {
@@ -18,12 +19,23 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     @Override
     public void hire(IEmployee employee) {
-        employees.add(employee);
+        if(canHire()) {
+            if(!employees.contains(employee)) {
+                employees.add(employee);
+            } else {
+                throw new UnsupportedOperationException(getNameAndSurname(employee) + " is already employed.");
+            }
+        } else {
+            throw new UnsupportedOperationException(getNameAndSurname(this) + " can't hire more employees!");
+        }
     }
 
     @Override
     public void fire(IEmployee employee) {
-        employees.remove(employee);
+        if(employees.contains(employee)){
+            employees.remove(employee);
+        } else throw new NoSuchElementException(
+                getNameAndSurname(this) + " doesn't employ " + getNameAndSurname(employee));
     }
 
     @Override
@@ -33,10 +45,10 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     @Override
     public void assign(Task task) {
-        if(employees.size()!=0) {
+        if(!employees.isEmpty()) {
             IEmployee employee = employees.get(random.nextInt(employees.size()));
             employee.assign(task);
-        }
+        } else throw new UnsupportedOperationException(getNameAndSurname(this) + " don't have employees.");
     }
 
     @Override
@@ -54,5 +66,9 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     public List<IEmployee> getEmployees() {
         return employees;
+    }
+
+    private String getNameAndSurname(IEmployee e){
+        return e.getPersonalData().getName() + " " + e.getPersonalData().getSurname();
     }
 }

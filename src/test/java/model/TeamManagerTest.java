@@ -3,21 +3,32 @@ package model;
 import factory.PersonalDataFactory;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertTrue;
-
 public class TeamManagerTest {
-    @Test
-    public void hire() throws Exception {
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void cantHireMoreEmployees() throws Exception {
         PersonalDataFactory factory = new PersonalDataFactory();
         PersonalData data = factory.generate(1).get(0);
 
-        Developer developer = new Developer(data, Role.DEVELOPER);
-        TeamManager manager = new TeamManager(data, Role.DEVELOPMENT_MANAGER,10);
-        manager.hire(developer);
+        Developer developer1 = new Developer(data, Role.DEVELOPER);
+        Developer developer2 = new Developer(data, Role.DEVELOPER);
+        Developer developer3 = new Developer(data, Role.DEVELOPER);
+        TeamManager manager = new TeamManager(data, Role.DEVELOPMENT_MANAGER,2);
 
-        assertTrue(manager.getEmployees().get(0)==developer);
+        manager.hire(developer1);
+        manager.hire(developer2);
+        manager.hire(developer3);
+    }
 
-        developer.reportWork().getReport();
+    public void hire2() throws Exception {
+        PersonalDataFactory factory = new PersonalDataFactory();
+        PersonalData data = factory.generate(1).get(0);
+
+        Developer developer1 = new Developer(data, Role.DEVELOPER);
+        Developer developer2 = new Developer(data, Role.DEVELOPER);
+        Developer developer3 = new Developer(data, Role.DEVELOPER);
+
+
     }
 
 }
