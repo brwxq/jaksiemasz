@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class CompanyFactory {
-    private final String PATH_TO_TASKS_FILE = "./src/main/java/resources/tasks";
     private Iterator<PersonalData> it;
     private Random random = new Random();
 
@@ -20,7 +19,13 @@ public class CompanyFactory {
 
         List<IEmployee> randomEmployees = new LinkedList<>();
         int size = limit/6; //assume 5:1 managers:developers
-        TeamManager ceo = new TeamManager(it.next(), Role.CEO, limit);
+
+        TeamManager ceo = TeamManager.builder()
+                .personalData(it.next())
+                .role(Role.CEO)
+                .limit(limit)
+                .build();
+
         List<TeamManager> managers = generateManagers(size);
         List<Developer> developers = generateDevelopers(limit-size-1);
 
@@ -47,15 +52,22 @@ public class CompanyFactory {
 
     private List<Task> generateTasks(int limit) throws IOException {
         List<Task> tasks = new LinkedList<>();
+        String PATH_TO_TASKS_FILE = "./src/main/java/resources/tasks";
         List<String> taskStrings = Files.readLines(new File(PATH_TO_TASKS_FILE), Charsets.UTF_8);
+        Task.Status[] taskValues = Task.Status.values();
         long DAY_IN_MS = 1000 * 60 * 60 * 24;
 
         for(int i=0; i<limit*5; i++){
             Date randomDeadlineDate = new Date(System.currentTimeMillis()+random.nextInt(14)*DAY_IN_MS);
 
-            tasks.add(new Task(random.nextInt(10),
-                    taskStrings.get(random.nextInt(taskStrings.size())),
-                    randomDeadlineDate));
+            Task task = Task.builder()
+                    .unitsOfWork(random.nextInt(10))
+                    .title(taskStrings.get(random.nextInt(taskStrings.size())))
+                    .deadlineDate(randomDeadlineDate)
+                    .build();
+            task.setStatus(taskValues[random.nextInt(taskValues.length)]);
+
+            tasks.add(task);
         }
         return tasks;
     }
@@ -64,7 +76,11 @@ public class CompanyFactory {
         List<TeamManager> managers = new LinkedList<>();
 
         for(int i=0; i<limit-1; i++) {
-            managers.add(new TeamManager(it.next(), Role.DEVELOPMENT_MANAGER, limit));
+            managers.add(TeamManager.builder()
+                    .personalData(it.next())
+                    .role(Role.DEVELOPMENT_MANAGER)
+                    .limit(limit)
+                    .build());
         }
         return managers;
     }
@@ -78,7 +94,10 @@ public class CompanyFactory {
         roles.add(Role.TESTER);
 
         for(int i=0; i<limit; i++) {
-            developers.add(new Developer(it.next(),roles.get(random.nextInt(roles.size()))));
+            developers.add(Developer.builder()
+                    .personalData(it.next())
+                    .role(roles.get(random.nextInt(roles.size())))
+                    .build());
         }
         return developers;
     }

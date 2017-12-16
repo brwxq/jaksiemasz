@@ -1,13 +1,18 @@
 package model;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
 public class Developer extends AbstractEmployee {
 
     private List<Task> tasks = new LinkedList<>();
 
-    public Developer(PersonalData personalData, Role role) {
+    @Builder
+    private Developer(PersonalData personalData, Role role) {
         super(personalData, role);
     }
 
@@ -21,7 +26,4 @@ public class Developer extends AbstractEmployee {
         return new Report(this,tasks);
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
 }

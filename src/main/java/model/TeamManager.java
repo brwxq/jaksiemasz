@@ -1,17 +1,26 @@
 package model;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+
+@Getter
 public class TeamManager extends AbstractEmployee implements IManager {
 
     private List<IEmployee> employees;
     private int limit;
-    private Random random = new Random();
 
-    public TeamManager(PersonalData personalData, Role role, int limit) {
+    @Getter(AccessLevel.NONE)
+    private final Random random = new Random();
+
+    @Builder
+    private TeamManager(PersonalData personalData, Role role, int limit) {
         super(personalData, role);
         this.limit = limit;
         this.employees = new LinkedList<>();
@@ -62,10 +71,6 @@ public class TeamManager extends AbstractEmployee implements IManager {
             }
         }
         return new Report(this,tasks);
-    }
-
-    public List<IEmployee> getEmployees() {
-        return employees;
     }
 
     private String getNameAndSurname(IEmployee e){
