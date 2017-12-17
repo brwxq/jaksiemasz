@@ -1,31 +1,37 @@
 package model;
 
+import com.google.common.collect.ComparisonChain;
+
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Report {
+public class Report{
     private final IEmployee employee;
-    private final List<Task> tasks;
+    private final List<IEmployee> employees;
 
-    public Report(IEmployee employee, List<Task> tasks){
+    public Report(IEmployee employee, List<IEmployee> employees){
         this.employee=employee;
-        this.tasks=new LinkedList<>(tasks);
+        this.employees=new LinkedList<>(employees);
     }
 
-    public void getReport() {
-        System.out.println(employee);
-
-        int numberOfAllUnits = tasks.stream()
-                .map(Task::getUnitsOfWork)
-                .reduce(0,(a, b)->a+b);
-        System.out.println("Number of all units of work: " + numberOfAllUnits);
+    public Report(IEmployee employee){
+        this.employee=employee;
+        this.employees=new LinkedList<>(Collections.singletonList(employee));
     }
 
-    public void printAllTasks(){
-        System.out.println(employee);
-        System.out.println("Tasks:");
-        tasks.forEach(System.out::println);
-    }
+    public void printReport() {
+        employees.sort((e1,e2)->
+                ComparisonChain.start()
+                        .compare(e1.getPersonalData().getSurname(),e2.getPersonalData().getSurname())
+                        .compare(e1.getPersonalData().getName(),e2.getPersonalData().getName())
+                        .compare(e1.getRole(),e2.getRole())
+                        .compare(e1.getUnitsOfWork(),e2.getUnitsOfWork()).result());
 
+
+        employees.forEach(IEmployee::presentWork);
+
+        System.out.println("Units of work: " + employees.stream().mapToInt(IEmployee::getUnitsOfWork).sum());
+    }
 
 }

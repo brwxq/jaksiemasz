@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.function.Predicate;
 
 
 @Getter
@@ -15,20 +16,22 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     private List<IEmployee> employees;
     private int limit;
+    List<Predicate<IEmployee>> preferences;
 
     @Getter(AccessLevel.NONE)
     private final Random random = new Random();
 
     @Builder
-    private TeamManager(PersonalData personalData, Role role, int limit) {
+    protected TeamManager(PersonalData personalData, Role role, int limit) {
         super(personalData, role);
         this.limit = limit;
         this.employees = new LinkedList<>();
+        this.preferences = new LinkedList<>();
     }
 
     @Override
     public void hire(IEmployee employee) {
-        if(canHire()) {
+        if(canHire(employee)) {
             if(!employees.contains(employee)) {
                 employees.add(employee);
             } else {
@@ -48,8 +51,9 @@ public class TeamManager extends AbstractEmployee implements IManager {
     }
 
     @Override
-    public boolean canHire() {
-        return limit > employees.size();
+    public boolean canHire(IEmployee employee) {
+        return (limit==0 || limit > employees.size())
+                && (preferences.isEmpty() || preferences.stream().anyMatch(p -> p.test(employee)));
     }
 
     @Override
@@ -62,18 +66,27 @@ public class TeamManager extends AbstractEmployee implements IManager {
 
     @Override
     public Report reportWork() {
-        List<Task> tasks = new LinkedList<>();
-
-        for(IEmployee e : employees){
-            if(e instanceof Developer) {
-                Developer developer = (Developer) e;
-                tasks.addAll(developer.getTasks());
-            }
-        }
-        return new Report(this,tasks);
+        return new Report(this,employees);
     }
 
     private String getNameAndSurname(IEmployee e){
         return e.getPersonalData().getName() + " " + e.getPersonalData().getSurname();
+    }
+
+    @Override
+    public int getUnitsOfWork() {
+        return employees.stream().mapToInt(IEmployee::getUnitsOfWork).sum();
+    }
+
+    @Override
+    public void addPreference(Predicate<IEmployee> p) {
+        preferences.add(p);
+    }
+
+    @Override
+    public void presentWork() {
+        System.out.println(this);
+        System.out.format("My workers: \n");
+        employees.forEach(e -> System.out.format("%-15s\n",e));
     }
 }

@@ -5,4 +5,6 @@ public interface IEmployee {
     PersonalData getPersonalData();
     void assign(Task task);
     Report reportWork();
+    int getUnitsOfWork();
+    void presentWork();
 }
